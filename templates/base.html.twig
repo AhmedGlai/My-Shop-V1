@@ -24,9 +24,13 @@
                     <a class="nav-link" style="color: #C9C9C9" aria-current="page" href="{{path('admin.property.index')}}">Store</a>
                 </li>
             </ul>
+            {% if app.user %}
+                        <a href="{{ path('logout') }}"  class="btn btn-danger">Log Out</a>
+            {% endif %}
             <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
                 <span class="navbar-toggler-icon"></span>
             </button>
+
             <div class="collapse navbar-collapse" id="navbarSupportedContent">
 
                 <form class="d-flex" role="search">

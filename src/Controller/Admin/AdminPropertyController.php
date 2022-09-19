@@ -12,6 +12,9 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 
+/**
+ * @property PropertyRepository $repository
+ */
 class AdminPropertyController extends AbstractController
 {
     /**
@@ -21,6 +24,7 @@ class AdminPropertyController extends AbstractController
 
     /**
      * @param PropertyRepository $repository
+     * @param EntityManagerInterface $manager
      */
     public function __construct(PropertyRepository $repository,EntityManagerInterface $manager)
     {
@@ -28,6 +32,17 @@ class AdminPropertyController extends AbstractController
         $this->manager = $manager;
     }
 
+    /**
+     * @Route("/admin", name="admin.property.index")
+     * @return Response
+     */
+    public function index(): Response
+    {
+        $property= $this->repository->findAll();
+        return $this->render('admin/property/index.html.twig',[
+            'property'=>$property
+        ]);
+    }
 
 
     /**
@@ -53,16 +68,7 @@ class AdminPropertyController extends AbstractController
 
     }
 
-    /**
-     * @Route("/admin", name="admin.property.index")
-     * @var PropertyRepository $repository
-     * @return Response
-     */
-    public function index()
-    {
-        $property= $this->repository->findAll();
-        return $this->render('admin/property/index.html.twig',compact('property'));
-    }
+
 
     /**
      * @Route("/admin/property/{id}",name="admin.property.edit",methods="GET|POST")
@@ -86,9 +92,10 @@ class AdminPropertyController extends AbstractController
     /**
      * @Route("/admin/property/{id}", name="admin.property.delete")
      * @param Property $property
-     * @return \Symfony\Component\HttpFoundation\RedirectResponse
+     * @param Request $request
+     * @return RedirectResponse
      */
-    public function delete(Property $property,Request $request)
+    public function delete(Property $property,Request $request): RedirectResponse
     {
         if($this->isCsrfTokenValid('delete'.$property->getId(),$request->get('_token')))
         {
