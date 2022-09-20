@@ -1,33 +1,37 @@
 {% extends 'base.html.twig' %}
-    {% block body %}
-        <div class="container mt-4">
-            <h1>Generate Offers</h1>
-            <table class="table table-striped">
-                <thead>
-                <tr>
-                    <th>Title</th>
-                    <th>Action</th>
-                </tr>
-                </thead>
-                <tbody>
-                {% for prop in property %}
-                <tr>
-                    <td>{{ prop.title }}</td>
-                    <td>
-                        <a href="{{ path('admin.property.edit', { id: prop.id}) }}" class="btn btn-primary">Edite</a>
-                        <form method="post" action="{{ path('admin.property.delete', { id: prop.id}) }}" style="display: inline-block" onsubmit="return confirm('ARE YOU SURE YOU WANT TO DELETE?!')">
-                            <input type="hidden" name="_method" value="DELETE">
-                            <input type="hidden" name="_token" value="{{ csrf_token('delete'~prop.id) }}">
-                            <button class="btn btn-danger">Delete</button>
-                        </form>
-                    </td>
-                </tr>
 
-                </tbody>
-                {% endfor %}
-            </table>
-            <div>
-                <a href="{{ path('admin.property.new') }}" class="btn btn-success">Create New Estate</a>
+{% block title 'store'%}
+    {% block body %}
+        <div class="jumbotron">
+            <div  class="container" style="font-family: 'Eras Medium ITC',serif;">
+                <h3>You want help?</h3><span style="color: #dc3545">SEARCH HERE!</span>
+                {{ form_start(form) }}
+                <div class="form-row align-items-end">
+                    <div class="col">
+                        {{ form_row(form.minSurface)}}
+                    </div>
+                     <div class="col">
+                         {{ form_row(form.maxPrice) }}
+                     </div>
+                    <br>
+                    <div class="col">
+                        <button class="btn btn-success">Research</button>
+                    </div>
+                </div>
+                <br>
+                {{ form_end(form) }}
             </div>
         </div>
+        <div class="container mt-4">
+        <h1>OUR OFFERS</h1>
+            <div class="row">
+            {% for prop in property %}
+                <div class="col-md-4">{% include 'property/_property.html.twig' %}</div>
+            {% endfor %}
+            </div>
+            <div class="pagination">
+                {{ knp_pagination_render(property) }}
+            </div>
+        </div>
+
     {% endblock body %}
