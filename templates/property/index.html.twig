@@ -6,14 +6,17 @@
             <div  class="container" style="font-family: 'Eras Medium ITC',serif;">
                 <h3>You want help?</h3><span style="color: #dc3545">SEARCH HERE!</span>
                 {{ form_start(form) }}
-                <div class="form-row align-items-end">
+                <div style="width: 30%" class="form-row align-items-end">
                     <div class="col">
                         {{ form_row(form.minSurface)}}
                     </div>
                      <div class="col">
                          {{ form_row(form.maxPrice) }}
                      </div>
-                    <br>
+                    <div>
+                        {{ form_row(form.options) }}
+                    </div>
+
                     <div class="col">
                         <button class="btn btn-success">Research</button>
                     </div>

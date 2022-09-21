@@ -1,5 +1,9 @@
 {
   "dependencies": {
     "bootstrap": "5.2.1"
+  },
+  "devDependencies": {
+    "@symfony/webpack-encore": "^4.0.0",
+    "webpack-notifier": "^1.15.0"
   }
 }

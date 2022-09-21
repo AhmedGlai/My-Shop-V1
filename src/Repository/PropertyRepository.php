@@ -31,7 +31,7 @@ class PropertyRepository extends ServiceEntityRepository
      * @param PropertySearch $search
      * @return Query
      */
-    public function findAllVisibleQuery(PropertySearch $search): Query
+    public function findAllVisibleQuery(PropertySearch $search)
     {
         $query= $this->findVisibleQuery();
 
@@ -47,10 +47,22 @@ class PropertyRepository extends ServiceEntityRepository
                 ->setParameter('minSurface',$search->getMinSurface());
             }
 
-        return $query->getQuery();
 
+
+        if($search->getOptions()->count() > 0)
+        {
+            $k=0;
+            foreach ($search->getOptions() as $option)
+            {
+                $k++;
+                $query=$query->andWhere(":option$k MEMBER OF q.options")
+                    ->setParameter("option$k",$option);
+
+            }
+        }
+        return $query->getQuery();
     }
-    public function findLatest():array
+    public function findLatest()
     {
         return $this->findVisibleQuery()
             ->setMaxResults(4)
@@ -58,7 +70,7 @@ class PropertyRepository extends ServiceEntityRepository
             ->getResult();
     }
 
-    private function findVisibleQuery(): QueryBuilder
+    private function findVisibleQuery()
     {
         return $this->createQueryBuilder('q')
             ->where('q.sold = false');
